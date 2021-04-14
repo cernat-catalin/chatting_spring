@@ -9,21 +9,23 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class NetworkService {
+
     private final String hostname;
     private final int port;
     private final EventQueue eventQueue;
-
     private final NetworkModel networkModel;
+
     private Socket socket;
     private WriteThread writeThread;
     private ReadThread readThread;
 
-
-    public NetworkService(String hostname, int port, EventQueue eventQueue) {
+    public NetworkService(String hostname, int port,
+                          EventQueue eventQueue,
+                          NetworkModel networkModel) {
         this.hostname = hostname;
         this.port = port;
         this.eventQueue = eventQueue;
-        this.networkModel = new NetworkModel();
+        this.networkModel = networkModel;
     }
 
     public void start() {

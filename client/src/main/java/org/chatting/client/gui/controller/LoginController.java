@@ -27,6 +27,7 @@ public class LoginController {
     public LoginController(GUIModel guiModel, EventQueue eventQueue) {
         this.guiModel = guiModel;
         this.eventQueue = eventQueue;
+
         this.scene = generateLoginScene();
     }
 

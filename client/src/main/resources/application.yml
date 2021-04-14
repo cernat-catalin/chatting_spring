@@ -1,0 +1,4 @@
+application:
+  network:
+    hostname: localhost
+    port: 8000

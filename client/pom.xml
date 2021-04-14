@@ -13,6 +13,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <aspectj.version>1.9.6</aspectj.version>
         <javafx.version>15.0.1</javafx.version>
+        <spring.boot.version>2.4.4</spring.boot.version>
     </properties>
 
     <dependencies>
@@ -24,21 +25,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${aspectj.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
 
         <dependency>
@@ -68,30 +63,6 @@
                     <mainClass>org.chatting.server.Main</mainClass>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.nickwongdev</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.12.6</version>
-                <configuration>
-                    <complianceLevel>11</complianceLevel>
-                    <source>11</source>
-                    <target>11</target>
-                    <showWeaveInfo>true</showWeaveInfo>
-                    <verbose>true</verbose>
-                    <Xlint>ignore</Xlint>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
-
 </project>

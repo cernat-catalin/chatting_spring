@@ -8,12 +8,15 @@ import org.chatting.client.gui.controller.MainController;
 import org.chatting.client.gui.controller.SignUpController;
 import org.chatting.client.model.GUIModel;
 import org.chatting.client.model.NetworkModel;
+import org.chatting.client.network.NetworkMessageProcessor;
 import org.chatting.client.network.NetworkService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
+@EnableAspectJAutoProxy
 @EnableConfigurationProperties(ApplicationProperties.class)
 public class ApplicationConfiguration {
 
@@ -34,10 +37,15 @@ public class ApplicationConfiguration {
     }
 
     @Bean
+    public NetworkMessageProcessor networkMessageProcessor() {
+        return new NetworkMessageProcessor(eventQueue());
+    }
+
+    @Bean
     public NetworkService networkService() {
         final String hostname = properties.getNetwork().getHostname();
         final int port = properties.getNetwork().getPort();
-        return new NetworkService(hostname, port, eventQueue(), networkModel());
+        return new NetworkService(hostname, port, networkMessageProcessor(), networkModel());
     }
 
     // GUI

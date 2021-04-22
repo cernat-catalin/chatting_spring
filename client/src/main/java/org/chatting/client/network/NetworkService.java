@@ -1,6 +1,5 @@
 package org.chatting.client.network;
 
-import org.chatting.client.gui.EventQueue;
 import org.chatting.client.model.NetworkModel;
 import org.chatting.common.message.Message;
 
@@ -12,7 +11,7 @@ public class NetworkService {
 
     private final String hostname;
     private final int port;
-    private final EventQueue eventQueue;
+    private final NetworkMessageProcessor networkMessageProcessor;
     private final NetworkModel networkModel;
 
     private Socket socket;
@@ -20,11 +19,11 @@ public class NetworkService {
     private ReadThread readThread;
 
     public NetworkService(String hostname, int port,
-                          EventQueue eventQueue,
+                          NetworkMessageProcessor networkMessageProcessor,
                           NetworkModel networkModel) {
         this.hostname = hostname;
         this.port = port;
-        this.eventQueue = eventQueue;
+        this.networkMessageProcessor = networkMessageProcessor;
         this.networkModel = networkModel;
     }
 
@@ -33,7 +32,7 @@ public class NetworkService {
             this.socket = new Socket(hostname, port);
 
             this.writeThread = new WriteThread(socket, networkModel);
-            this.readThread = new ReadThread(socket, networkModel, eventQueue);
+            this.readThread = new ReadThread(socket, networkModel, networkMessageProcessor);
 
             writeThread.start();
             readThread.start();

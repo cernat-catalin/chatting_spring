@@ -2,25 +2,27 @@ package org.chatting.server.network;
 
 import org.chatting.common.message.Message;
 import org.chatting.common.message.UserListMessage;
-import org.chatting.server.database.DatabaseService;
 import org.chatting.server.exception.NetworkException;
+import org.chatting.server.model.ServerModel;
+import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class NetworkService {
     private final int port;
-    private final Set<UserThread> userThreads = new HashSet<>();
-    private final DatabaseService databaseService;
+    private final ServerModel serverModel;
+    private final ApplicationContext applicationContext;
 
-    public NetworkService(int port, DatabaseService databaseService) {
+    public NetworkService(ApplicationContext applicationContext, int port, ServerModel serverModel) {
+        this.applicationContext = applicationContext;
         this.port = port;
-        this.databaseService = databaseService;
+        this.serverModel = serverModel;
     }
 
     public void start() {
@@ -28,9 +30,12 @@ public class NetworkService {
 
             while (true) {
                 final Socket socket = serverSocket.accept();
-                final UserThread newUser = new UserThread(socket, this, databaseService);
-                userThreads.add(newUser);
-                newUser.start();
+                final UserThread userThread = applicationContext.getBean(UserThread.class);
+                final NetworkMessageProcessor messageProcessor = applicationContext.getBean(NetworkMessageProcessor.class);
+
+                userThread.init(socket, messageProcessor);
+                messageProcessor.setUserThread(userThread);
+                addUser(userThread);
             }
 
         } catch (IOException ex) {
@@ -39,32 +44,37 @@ public class NetworkService {
     }
 
     public int getUserCount() {
-        return userThreads.size();
+        return serverModel.getUserThreads().size();
     }
 
     void broadcast(Message message) throws IOException {
-        for (UserThread userThread : userThreads) {
+        for (UserThread userThread : serverModel.getUserThreads()) {
             userThread.sendMessage(message);
         }
     }
 
     void removeUser(UserThread userThread) {
         try {
-            userThreads.remove(userThread);
+            serverModel.removeUser(userThread);
             sendConnectedUsersList();
         } catch (IOException ex) {
             System.out.printf("Error removing user %s\n", ex);
         }
     }
 
+    private void addUser(UserThread userThread) throws IOException {
+        serverModel.addUser(userThread);
+        userThread.start();
+    }
+
     void sendConnectedUsersList() throws IOException {
-        final List<String> connectedUsers = userThreads.stream()
+        final List<String> connectedUsers = serverModel.getUserThreads().stream()
                 .filter(ut -> ut.getUser() != null)
                 .map(ut -> ut.getUser().getUsername())
                 .collect(Collectors.toList());
 
         final Message message = new UserListMessage(connectedUsers);
-        for (UserThread userThread : userThreads) {
+        for (UserThread userThread : serverModel.getUserThreads()) {
             userThread.sendMessage(message);
         }
     }

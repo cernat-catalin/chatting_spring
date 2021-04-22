@@ -3,7 +3,7 @@ package org.chatting.server.network;
 import org.chatting.common.exception.InvalidMessageException;
 import org.chatting.common.exception.UnsupportedMessageTypeException;
 import org.chatting.common.message.*;
-import org.chatting.server.NetworkException;
+import org.chatting.server.exception.NetworkException;
 import org.chatting.server.database.DatabaseService;
 import org.chatting.server.entity.UserStatisticsEntity;
 import org.chatting.server.model.User;

@@ -10,15 +10,15 @@ From `/client`:
 
 * Compile: `mvn clean compile`
 * Execute: `mvn exec:java -Dexec.mainClass="org.chatting.client.SpringBootMain"`
-* Compile and execute: `mvn clean compile exec:java -Dexec.mainClass="org.chatting.client.Main"`
+* Compile and execute: `mvn clean compile exec:java -Dexec.mainClass="org.chatting.client.SpringBootMain"`
 
 ## Server
 
 From `/server`:
 
 * Compile: `mvn clean compile`
-* Execute: `mvn exec:java -Dexec.mainClass="org.chatting.server.Main"`
-* Compile and execute: `mvn clean compile exec:java -Dexec.mainClass="org.chatting.server.Main"`
+* Execute: `mvn exec:java -Dexec.mainClass="org.chatting.server.SpringBootMain"`
+* Compile and execute: `mvn clean compile exec:java -Dexec.mainClass="org.chatting.server.SpringBootMain"`
 
 
 

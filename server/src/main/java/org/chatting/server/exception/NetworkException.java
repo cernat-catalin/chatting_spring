@@ -1,4 +1,4 @@
-package org.chatting.server;
+package org.chatting.server.exception;
 
 public class NetworkException extends RuntimeException {
 

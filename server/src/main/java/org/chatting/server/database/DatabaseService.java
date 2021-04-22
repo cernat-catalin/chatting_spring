@@ -9,7 +9,12 @@ import java.text.MessageFormat;
 import java.util.Optional;
 
 public class DatabaseService {
-    private final QueryExecutor queryExecutor = new QueryExecutor();
+
+    private final QueryExecutor queryExecutor;
+
+    public DatabaseService(QueryExecutor queryExecutor) {
+        this.queryExecutor = queryExecutor;
+    }
 
     public Optional<UserEntity> getUserByUsername(String username) {
         final String query = MessageFormat.format("SELECT id, username, password FROM user WHERE username = ''{0}''",

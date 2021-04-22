@@ -2,8 +2,8 @@ package org.chatting.server.network;
 
 import org.chatting.common.message.Message;
 import org.chatting.common.message.UserListMessage;
-import org.chatting.server.NetworkException;
 import org.chatting.server.database.DatabaseService;
+import org.chatting.server.exception.NetworkException;
 
 import java.io.IOException;
 import java.net.ServerSocket;

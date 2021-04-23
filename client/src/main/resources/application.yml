@@ -2,3 +2,6 @@ application:
   network:
     hostname: localhost
     port: 8000
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

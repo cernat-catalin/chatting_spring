@@ -21,15 +21,15 @@ public class CachingAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CachingAspect.class);
 
-    @Pointcut("execution(* org.chatting.server.database.DatabaseService.getUserStatistics(..))")
+    @Pointcut("execution(* org.chatting.server.database.DatabaseStatisticsService.getUserStatistics(..))")
     private void userStatistics() {
     }
 
-    @Pointcut("execution(* org.chatting.server.database.DatabaseService.incrementUserLogins(..))")
+    @Pointcut("execution(* org.chatting.server.database.DatabaseStatisticsService.incrementUserLogins(..))")
     private void incrementLogins() {
     }
 
-    @Pointcut("execution(* org.chatting.server.database.DatabaseService.incrementUserMessages(..))")
+    @Pointcut("execution(* org.chatting.server.database.DatabaseStatisticsService.incrementUserMessages(..))")
     private void incrementMessages() {
     }
 

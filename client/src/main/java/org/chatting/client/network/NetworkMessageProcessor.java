@@ -31,7 +31,7 @@ public class NetworkMessageProcessor {
                 break;
             case SIGN_UP_RESULT:
                 final SignupResultMessage signupResultMessage = (SignupResultMessage) message;
-                final Event signupResultEvent = new SignupResultEvent(signupResultMessage.isSignupResult());
+                final Event signupResultEvent = new SignupResultEvent(signupResultMessage.isSignupResult(), signupResultMessage.getReason());
                 eventQueue.pushEvent(signupResultEvent);
                 break;
             case USER_LIST:

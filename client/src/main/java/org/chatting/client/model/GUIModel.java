@@ -50,7 +50,7 @@ public class GUIModel {
     }
 
     public void setSignupError(String reason) {
-        signupError.set("Something went wrong: " + reason);
+        signupError.set(reason);
     }
 
     public void clearSignupError() {

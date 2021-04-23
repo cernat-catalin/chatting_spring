@@ -60,14 +60,14 @@ public class EventProcessor extends Thread {
                 break;
             case SIGN_UP_RESULT_RECEIVED:
                 final SignupResultEvent signupResultEvent = (SignupResultEvent) event;
-                final String reason = signupResultEvent.reason;
+                final String reason = signupResultEvent.getReason();
                 Platform.runLater(() -> {
                     if (signupResultEvent.isSignupAccepted()) {
                         mainController.getGuiModel().clearSignupError();
                         mainController.getGuiModel().clearLoginError();
                         mainController.changeScene(SceneType.LOGIN);
                     } else {
-                        mainController.getGuiModel().setSignupError("User already exists");
+                        mainController.getGuiModel().setSignupError(reason);
                     }
                 });
                 break;

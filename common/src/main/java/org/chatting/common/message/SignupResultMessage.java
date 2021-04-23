@@ -11,8 +11,9 @@ public class SignupResultMessage implements Message, Serializable {
 
     }
 
-    public SignupResultMessage(boolean signupResult) {
+    public SignupResultMessage(boolean signupResult, String reason) {
         this.signupResult = signupResult;
+        this.reason = reason;
     }
 
     @Override
@@ -26,5 +27,13 @@ public class SignupResultMessage implements Message, Serializable {
 
     public void setSignupResult(boolean signupResult) {
         this.signupResult = signupResult;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

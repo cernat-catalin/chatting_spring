@@ -104,7 +104,8 @@ public class NetworkMessageProcessor {
     }
 
     private void sendSingUpResult(boolean result) throws IOException {
-        final Message signupResultMessage = new SignupResultMessage(result);
+        final String reason = result ? "" : "Username taken";
+        final Message signupResultMessage = new SignupResultMessage(result, reason);
         userThread.sendMessage(signupResultMessage);
     }
 

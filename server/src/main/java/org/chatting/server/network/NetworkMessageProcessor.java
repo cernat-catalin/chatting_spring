@@ -3,6 +3,7 @@ package org.chatting.server.network;
 import org.chatting.common.exception.UnsupportedMessageTypeException;
 import org.chatting.common.message.*;
 import org.chatting.server.database.DatabaseService;
+import org.chatting.server.database.DatabaseStatisticsService;
 import org.chatting.server.entity.UserStatisticsEntity;
 import org.chatting.server.model.User;
 import org.springframework.context.annotation.Scope;
@@ -18,10 +19,12 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 public class NetworkMessageProcessor {
 
     private final DatabaseService databaseService;
+    private final DatabaseStatisticsService statisticsService;
     private UserThread userThread;
 
-    public NetworkMessageProcessor(DatabaseService databaseService) {
+    public NetworkMessageProcessor(DatabaseService databaseService, DatabaseStatisticsService statisticsService) {
         this.databaseService = databaseService;
+        this.statisticsService = statisticsService;
     }
 
     public void setUserThread(UserThread userThread) {
@@ -57,7 +60,7 @@ public class NetworkMessageProcessor {
             sendLoginResult(true);
             userThread.getServer().sendConnectedUsersList();
 
-            databaseService.incrementUserLogins(userThread.getUser().getUsername());
+            statisticsService.incrementUserLogins(userThread.getUser().getUsername());
             sendUserStatistics();
 
             final String announcement = String.format("%s has joined the chat!", userThread.getUser().getUsername());
@@ -79,7 +82,7 @@ public class NetworkMessageProcessor {
                 userThread.getUser().getUsername(), userSendMessage.getMessage());
 
         userThread.getServer().broadcast(chatMessage);
-        databaseService.incrementUserMessages(userThread.getUser().getUsername());
+        statisticsService.incrementUserMessages(userThread.getUser().getUsername());
         sendUserStatistics();
     }
 
@@ -106,7 +109,7 @@ public class NetworkMessageProcessor {
     }
 
     private void sendUserStatistics() throws IOException {
-        final Optional<UserStatisticsEntity> userStatisticsOpt = databaseService.getUserStatistics(userThread.getUser()
+        final Optional<UserStatisticsEntity> userStatisticsOpt = statisticsService.getUserStatistics(userThread.getUser()
                 .getUsername());
         if (userStatisticsOpt.isPresent()) {
             final UserStatisticsEntity userStatisticsEntity = userStatisticsOpt.get();

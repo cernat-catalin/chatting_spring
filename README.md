@@ -45,3 +45,5 @@ Server differences (from AspectJ):
   * Had a problem with a set of User Threads. As I didn't override hashCode / equals, I had to be careful when
   using add / remove (this is without proxy while reference from other objects are usually proxies). Ended up using
     a hashmap instead.
+* Security
+    * Had to switch to another method (internal call)

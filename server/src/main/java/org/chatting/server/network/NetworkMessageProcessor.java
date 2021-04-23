@@ -47,18 +47,25 @@ public class NetworkMessageProcessor {
         }
     }
 
-    private void processLogin(LoginMessage loginMessage) throws IOException {
-        userThread.setUser(constructUser(loginMessage));
+    public void processLogin(LoginMessage loginMessage) throws IOException {
+        final boolean goodCredentials = databaseService
+                .areCorrectUserCredentials(loginMessage.getUsername(), loginMessage.getPassword());
 
-        sendLoginResult(true);
-        userThread.getServer().sendConnectedUsersList();
+        if (goodCredentials) {
+            userThread.setUser(constructUser(loginMessage));
 
-        databaseService.incrementUserLogins(userThread.getUser().getUsername());
-        sendUserStatistics();
+            sendLoginResult(true);
+            userThread.getServer().sendConnectedUsersList();
 
-        final String announcement = String.format("%s has joined the chat!", userThread.getUser().getUsername());
-        final ChatMessage chatMessage = new ChatMessage(ChatMessage.AuthorType.SERVER, "Server", announcement);
-        userThread.getServer().broadcast(chatMessage);
+            databaseService.incrementUserLogins(userThread.getUser().getUsername());
+            sendUserStatistics();
+
+            final String announcement = String.format("%s has joined the chat!", userThread.getUser().getUsername());
+            final ChatMessage chatMessage = new ChatMessage(ChatMessage.AuthorType.SERVER, "Server", announcement);
+            userThread.getServer().broadcast(chatMessage);
+        } else {
+            sendLoginResult(false);
+        }
     }
 
     private User constructUser(LoginMessage loginMessage) {

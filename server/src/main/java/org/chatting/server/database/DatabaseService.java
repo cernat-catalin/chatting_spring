@@ -55,4 +55,8 @@ public class DatabaseService {
                 username);
         queryExecutor.executeQuery(query);
     }
+
+    public boolean areCorrectUserCredentials(String username, String password) {
+        return true;
+    }
 }
